@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Mic, MicOff, Send, Volume2, ShieldCheck, ChevronRight, Bot, User, AlertTriangle } from 'lucide-react';
 import { getCaseById } from '../data/casesData';
 import { voiceService } from '../services/voiceService';
+import { apiUrl } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 
 const NOT_IN_RECORDS = { en: 'This information is not documented in the available case records.', hi: 'यह जानकारी उपलब्ध केस रिकॉर्ड में दर्ज नहीं है।', bn: 'এই তথ্য উপলব্ধ কেস রেকর্ডে নথিভুক্ত নেই।', ta: 'இந்த தகவல் கிடைக்கும் வழக்கு பதிவுகளில் ஆவணப்படுத்தப்படவில்லை।', te: 'ఈ సమాచారం అందుబాటులో ఉన్న కేసు రికార్డులలో నమోదు కాలేదు।', mr: 'ही माहिती उपलब्ध केस नोंदींमध्ये दस्तऐवजीकृत नाही.', gu: 'આ માહિતી ઉપલબ્ધ કેસ રેકોર્ડમાં નોંધાયેલ નથી.', kn: 'ಈ ಮಾಹಿತಿ ಲಭ್ಯವಿರುವ ಪ್ರಕರಣ ದಾಖಲೆಗಳಲ್ಲಿ ದಾಖಲಾಗಿಲ್ಲ.', ml: 'ഈ വിവരം ലഭ്യമായ കേസ് രേഖകളിൽ രേഖപ്പെടുത്തിയിട്ടില്ല.', pa: 'ਇਹ ਜਾਣਕਾਰੀ ਉਪਲਬਧ ਕੇਸ ਰਿਕਾਰਡਾਂ ਵਿੱਚ ਦਰਜ ਨਹੀਂ ਹੈ।', or: 'ଏହି ସୂଚନା ଉପଲବ୍ଧ କେସ୍ ରେକର୍ଡରେ ଦଲିଲଭୁକ୍ତ ନୁହେଁ।', as: 'এই তথ্য উপলব্ধ কেছ ৰেকৰ্ডত নথিভুক্ত কৰা হোৱা নাই।', ur: 'یہ معلومات دستیاب کیس ریکارڈ میں درج نہیں ہیں۔', bho: 'ई जानकारी उपलब्ध केस रिकॉर्ड में दर्ज नइखे।' };
@@ -37,7 +38,7 @@ export default function CrossExamination() {
     setInputQuery('');
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/cross-examine', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ caseId: caseItem.id, query: textToSend, language: interfaceLanguage }) });
+      const response = await fetch(apiUrl('/api/cross-examine'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ caseId: caseItem.id, query: textToSend, language: interfaceLanguage }) });
       let answerData = { answer: notInRecords, source: 'MNEME Evidence Passport', status: 'UNVERIFIED_IN_RECORDS' };
       if (response.ok) answerData = await response.json();
       if (answerData.answer === NOT_IN_RECORDS.en && interfaceLanguage !== 'en') answerData = { ...answerData, answer: notInRecords };

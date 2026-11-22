@@ -1,4 +1,5 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿import { apiUrl } from '../services/api';
+import React, { useEffect, useState } from 'react';
 import { Mic, MicOff, Volume2, VolumeX, X, Bot, Radio, AlertTriangle } from 'lucide-react';
 import { voiceService } from '../services/voiceService';
 import { useLanguage } from '../context/LanguageContext';
@@ -42,7 +43,7 @@ export default function InvestigationVoiceAssistant({ caseItem, currentStage }) 
     setIsEvaluating(true);
     voiceService.playAudioFeedback('click');
     try {
-      const res = await fetch('/api/cross-examine', {
+      const res = await fetch(apiUrl('/api/cross-examine'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ caseId: caseItem?.id, query: text, language: interfaceLanguage })

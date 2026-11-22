@@ -3,6 +3,7 @@
 // Never assumes provider language support. Never fabricates API responses.
 
 import { getLanguageByCode } from '../data/languages';
+import { apiUrl } from './api';
 
 class VoiceService {
   constructor() {
@@ -68,7 +69,7 @@ class VoiceService {
 
   async checkBackendStatus() {
     try {
-      const res = await fetch('/api/voice/status');
+      const res = await fetch(apiUrl('/api/voice/status'));
       if (res.ok) {
         const data = await res.json();
         this.apiStatus = data;
@@ -112,7 +113,7 @@ class VoiceService {
     // Optional configured provider (server-side keys only)
     if (this.apiStatus.configured) {
       try {
-        const response = await fetch('/api/voice/tts', {
+        const response = await fetch(apiUrl('/api/voice/tts'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text, language: langCode, locale, voice: options.voice, rate })

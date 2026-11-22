@@ -4,6 +4,7 @@ import { Mic, MicOff, ShieldCheck, CheckCircle2, Clock, AlertTriangle, Volume2, 
 import { UNIVERSES } from '../data/universesData';
 import { storageService } from '../services/storageService';
 import { voiceService } from '../services/voiceService';
+import { apiUrl } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function ExperienceCreator() {
@@ -71,7 +72,7 @@ export default function ExperienceCreator() {
       voiceTranscript: transcript
     };
     try {
-      const response = await fetch('/api/submissions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const response = await fetch(apiUrl('/api/submissions'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       let resData = { submission: null };
       if (response.ok) resData = await response.json();
       const local = storageService.saveExperienceSubmission(payload);
